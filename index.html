@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>오목 (Omok)</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>오목</h1>
+      <p class="subtitle">검은 돌이 먼저 두고, 흰 돌과 번갈아 둡니다.</p>
+    </header>
+
+    <section class="status" id="status" aria-live="polite">
+      <span class="stone-badge stone-badge--black" id="turn-stone"></span>
+      <span class="status-text" id="status-text">검은 돌 차례입니다.</span>
+    </section>
+
+    <section class="board-area">
+      <canvas id="board" width="640" height="640" role="img"
+              aria-label="15줄 15칸 오목판"></canvas>
+    </section>
+
+    <section class="controls">
+      <button type="button" id="undo-button">한 수 무르기</button>
+      <button type="button" id="reset-button">새 게임</button>
+    </section>
+
+    <section class="record">
+      <h2>대국 기록</h2>
+      <ol id="move-list" class="move-list"></ol>
+    </section>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>
