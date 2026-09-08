@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>오목 온라인 대국</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>오목 온라인 대국</h1>
+      <p class="subtitle">먼저 입장한 사람이 검은 돌을, 그다음 입장한 사람이 흰 돌을 잡습니다.</p>
+      <p class="subtitle"><a class="mode-link" href="index.html">한 대의 컴퓨터에서 두는 방식으로 이동</a></p>
+    </header>
+
+    <section class="join-panel" id="join-panel">
+      <label for="room-input">대국방 코드</label>
+      <div class="join-row">
+        <input type="text" id="room-input" maxlength="12" placeholder="예: OMOK1" autocomplete="off">
+        <button type="button" id="join-button">입장하기</button>
+      </div>
+      <p class="hint">같은 코드를 입력한 두 사람이 같은 판에서 대국합니다. 코드를 비워 두면 MAIN 방으로 입장합니다.</p>
+    </section>
+
+    <section class="room-panel" id="room-panel" hidden>
+      <div class="room-line">
+        <span>대국방 <strong id="room-code"></strong></span>
+        <button type="button" id="copy-button" class="small-button">초대 주소 복사</button>
+      </div>
+      <div class="seat-line">
+        <span class="seat" id="seat-black"><span class="stone-badge stone-badge--black"></span> 검은 돌: <span class="seat-state">비어 있음</span></span>
+        <span class="seat" id="seat-white"><span class="stone-badge stone-badge--white"></span> 흰 돌: <span class="seat-state">비어 있음</span></span>
+        <span class="seat" id="spectator-count">관전자 0명</span>
+      </div>
+    </section>
+
+    <section class="status" id="status" aria-live="polite">
+      <span class="stone-badge stone-badge--none" id="turn-stone"></span>
+      <span class="status-text" id="status-text">대국방 코드를 입력하고 입장해 주십시오.</span>
+    </section>
+
+    <p class="notice" id="notice" aria-live="polite"></p>
+
+    <section class="board-area">
+      <canvas id="board" width="640" height="640" role="img"
+              aria-label="15줄 15칸 오목판"></canvas>
+    </section>
+
+    <section class="controls">
+      <button type="button" id="undo-button" disabled>내 마지막 수 무르기</button>
+      <button type="button" id="reset-button" disabled>새 게임</button>
+    </section>
+
+    <section class="record">
+      <h2>대국 기록</h2>
+      <ol id="move-list" class="move-list"></ol>
+    </section>
+  </main>
+
+  <script src="omok-core.js"></script>
+  <script src="board-view.js"></script>
+  <script src="online.js"></script>
+</body>
+</html>

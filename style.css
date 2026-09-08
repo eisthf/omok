@@ -10,6 +10,9 @@
 
 * { box-sizing: border-box; }
 
+/* hidden 속성이 display 선언에 밀리지 않도록 합니다. */
+[hidden] { display: none !important; }
+
 body {
   margin: 0;
   padding: 24px 16px 48px;
@@ -129,3 +132,92 @@ button:disabled {
 }
 
 .move-list li::marker { color: var(--accent); }
+
+.mode-link {
+  color: var(--accent);
+}
+
+.join-panel,
+.room-panel {
+  padding: 16px 18px;
+  background: var(--panel);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.join-row {
+  display: flex;
+  gap: 10px;
+}
+
+#room-input {
+  flex: 1;
+  padding: 11px 14px;
+  font-size: 16px;
+  font-family: inherit;
+  color: var(--text);
+  background: #1a1f2b;
+  border: 1px solid #414a5e;
+  border-radius: 10px;
+  text-transform: uppercase;
+}
+
+#join-button { flex: 0 0 auto; }
+
+.small-button {
+  flex: 0 0 auto;
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 8px;
+}
+
+.hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.room-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 15px;
+}
+
+.room-line strong {
+  color: var(--accent);
+  letter-spacing: 0.12em;
+}
+
+.seat-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.seat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.seat .stone-badge {
+  width: 14px;
+  height: 14px;
+}
+
+.seat--me .seat-state { color: var(--accent); }
+
+.notice {
+  margin: 0;
+  min-height: 20px;
+  font-size: 14px;
+  color: var(--accent);
+}
+
+.notice--error { color: #ff8a80; }
