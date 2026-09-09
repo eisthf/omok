@@ -26,6 +26,7 @@
   let myRole = core.EMPTY;
   let seats = { black: { taken: false }, white: { taken: false } };
   let reconnectDelay = 1000;
+  const sound = window.OmokSound.createStoneSound();
 
   const view = window.createBoardView(document.getElementById('board'), handleSelect);
 
@@ -145,6 +146,14 @@
   }
 
   function applyState(message) {
+    // 착수가 하나 늘어난 경우에만 소리를 냅니다.
+    // 입장 직후에 이미 놓인 돌까지 한꺼번에 울리지 않도록 하기 위함입니다.
+    const previousCount = game.moves.length;
+    const added = message.moves.length - previousCount;
+    if (added === 1) {
+      sound.play(message.moves[message.moves.length - 1].stone);
+    }
+
     myRole = message.role;
     roomCode = message.room;
     seats = message.seats;
@@ -229,6 +238,8 @@
       showNotice(`초대 주소를 직접 복사해 주십시오: ${address}`, false);
     }
   });
+
+  setupSoundButton(sound, document.getElementById('sound-button'));
 
   view.setGame(game);
   view.resize();

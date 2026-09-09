@@ -11,6 +11,7 @@
   const moveList = document.getElementById('move-list');
 
   let game = core.createGame();
+  const sound = window.OmokSound.createStoneSound();
   const view = window.createBoardView(document.getElementById('board'), handleSelect);
 
   function updateStatus() {
@@ -47,7 +48,9 @@
     if (core.validateMove(game, x, y)) {
       return;
     }
+    const stone = game.currentPlayer;
     core.applyMove(game, x, y);
+    sound.play(stone);
     refresh();
   }
 
@@ -61,6 +64,8 @@
     game = core.createGame();
     refresh();
   });
+
+  setupSoundButton(sound, document.getElementById('sound-button'));
 
   view.setGame(game);
   view.resize();

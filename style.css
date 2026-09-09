@@ -221,3 +221,14 @@ button:disabled {
 }
 
 .notice--error { color: #ff8a80; }
+
+.sound-button {
+  flex: 0 0 auto;
+  background: #3a4356;
+  color: var(--text);
+}
+
+.sound-button--off {
+  background: #2b3242;
+  color: var(--muted);
+}

@@ -28,6 +28,7 @@ const SERVABLE_FILES = new Set([
   'style.css',
   'omok-core.js',
   'board-view.js',
+  'sound.js',
   'game.js',
   'online.js',
 ]);
