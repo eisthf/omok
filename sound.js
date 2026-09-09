@@ -9,7 +9,7 @@
   function getNoiseBuffer(context) {
     let buffer = noiseBuffers.get(context);
     if (!buffer) {
-      const length = Math.floor(context.sampleRate * 0.06);
+      const length = Math.floor(context.sampleRate * 0.12);
       buffer = context.createBuffer(1, length, context.sampleRate);
       const samples = buffer.getChannelData(0);
       for (let i = 0; i < length; i += 1) {
@@ -29,7 +29,7 @@
     const startTime = settings.time !== undefined ? settings.time : context.currentTime;
     const volume = settings.volume !== undefined ? settings.volume : 1;
     // 검은 돌과 흰 돌의 소리를 조금 다르게 하여 누가 두었는지 귀로도 구분되게 합니다.
-    const basePitch = settings.stone === 2 ? 1180 : 980;
+    const basePitch = settings.stone === 2 ? 430 : 360;
     const pitch = basePitch * (0.97 + Math.random() * 0.06);
 
     const output = context.createGain();
@@ -39,30 +39,33 @@
     const noise = context.createBufferSource();
     noise.buffer = getNoiseBuffer(context);
 
+    // 높은 성분을 걸러 내어 날카로운 느낌을 줄이고 둔탁한 울림만 남깁니다.
     const noiseFilter = context.createBiquadFilter();
-    noiseFilter.type = 'bandpass';
-    noiseFilter.frequency.value = pitch * 2.2;
-    noiseFilter.Q.value = 1.1;
+    noiseFilter.type = 'lowpass';
+    noiseFilter.frequency.setValueAtTime(pitch * 4.5, startTime);
+    noiseFilter.frequency.exponentialRampToValueAtTime(pitch * 1.2, startTime + 0.05);
+    noiseFilter.Q.value = 0.7;
 
     const noiseGain = context.createGain();
-    noiseGain.gain.setValueAtTime(0.9, startTime);
-    noiseGain.gain.exponentialRampToValueAtTime(0.0008, startTime + 0.045);
+    noiseGain.gain.setValueAtTime(0.75, startTime);
+    noiseGain.gain.exponentialRampToValueAtTime(0.0008, startTime + 0.07);
 
     noise.connect(noiseFilter);
     noiseFilter.connect(noiseGain);
     noiseGain.connect(output);
     noise.start(startTime);
-    noise.stop(startTime + 0.06);
+    noise.stop(startTime + 0.1);
 
-    // 두 개의 배음은 판이 울리는 여운을 표현합니다.
+    // 낮은 기음이 묵직한 몸통을 만들고, 위쪽 배음이 나무의 결을 더합니다.
     [
-      { ratio: 1, gain: 0.55, decay: 0.075 },
-      { ratio: 2.4, gain: 0.3, decay: 0.045 },
+      { ratio: 0.5, gain: 0.7, decay: 0.2, type: 'sine' },
+      { ratio: 1, gain: 0.5, decay: 0.13, type: 'sine' },
+      { ratio: 2.1, gain: 0.16, decay: 0.05, type: 'triangle' },
     ].forEach((part) => {
       const oscillator = context.createOscillator();
-      oscillator.type = 'triangle';
+      oscillator.type = part.type;
       oscillator.frequency.setValueAtTime(pitch * part.ratio, startTime);
-      oscillator.frequency.exponentialRampToValueAtTime(pitch * part.ratio * 0.6, startTime + part.decay);
+      oscillator.frequency.exponentialRampToValueAtTime(pitch * part.ratio * 0.72, startTime + part.decay);
 
       const gain = context.createGain();
       gain.gain.setValueAtTime(part.gain, startTime);
@@ -74,7 +77,7 @@
       oscillator.stop(startTime + part.decay + 0.02);
     });
 
-    return 0.1;
+    return 0.25;
   }
 
   // 화면에서 사용하는 소리 재생기를 만듭니다.
